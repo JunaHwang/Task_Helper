@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>작업 도우미</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .site-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .site-title a {
+            color: black;
+            text-decoration: none;
+        }
+        .site-title a:hover {
+            text-decoration: underline;
+        }
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .tab button {
+            background-color: #e7e7e7;
+            color: black;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            flex-grow: 1;
+        }
+        .tab button:hover {
+            background-color: #ddd;
+        }
+        .tab button.active {
+            background-color: #ccc;
+        }
+        .tabcontent {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-top: none;
+        }
+        .compare-container, .input-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .compare-result, .input-area {
+            flex: 1 1 300px;
+            min-width: 0;
+        }
+        textarea, input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .bold {
+            font-weight: bold;
+        }
+        #splitResult {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        #splitResult a {
+            color: blue;
+            text-decoration: underline;
+        }
+        .input-large {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+            resize: vertical;
+        }
+        .delimiter-input {
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="site-title"><a href="#" onclick="goHome()">작업 도우미</a></div>
+        <div class="tab">
+            <button class="tablinks" onclick="openTab(event, 'TextCompare')">텍스트 비교</button>
+            <button class="tablinks" onclick="openTab(event, 'TextSplit')">텍스트 분리</button>
+            <button class="tablinks" onclick="openTab(event, 'MarkdownTable')">Markdown 표 만들기</button>
+        </div>
+
+        <div id="TextCompare" class="tabcontent">
+            <h3>텍스트 비교</h3>
+            <div class="input-container">
+                <div class="input-area">
+                    <input type="color" id="leftColor" value="#ffff00">
+                    <textarea id="text1" rows="4" placeholder="첫 번째 텍스트"></textarea>
+                </div>
+                <div class="input-area">
+                    <input type="color" id="rightColor" value="#00ffff">
+                    <textarea id="text2" rows="4" placeholder="두 번째 텍스트"></textarea>
+                </div>
+            </div>
+            <div class="button-container">
+                <button onclick="compareTexts()">비교</button>
+                <button onclick="resetTextCompare()">초기화</button>
+            </div>
+            <div class="compare-container">
+                <div id="result1" class="compare-result"></div>
+                <div id="result2" class="compare-result"></div>
+            </div>
+        </div>
+
+        <div id="TextSplit" class="tabcontent">
+            <h3>텍스트 분리</h3>
+            <div class="delimiter-container">
+                <input type="text" id="delimiter" class="delimiter-input" placeholder="구분자 입력 (기본값: @)">
+            </div>
+            <div class="text-split-container">
+                <textarea id="inputText" class="input-large" placeholder="텍스트를 입력하세요"></textarea>
+                <div class="button-container">
+                    <button onclick="splitText()">분리</button>
+                    <button onclick="resetTextSplit()">초기화</button>
+                    <button onclick="copySplitText()">복사</button>
+                </div>
+                <div id="splitResult" class="compare-result"></div>
+            </div>
+        </div>
+
+        <div id="MarkdownTable" class="tabcontent">
+            <h3>Markdown 표 만들기</h3>
+            <div class="input-container">
+                <div>
+                    <label for="rows">행</label>
+                    <input type="number" id="rows" min="1" value="3" placeholder="행">
+                </div>
+                <div>
+                    <label for="cols">열</label>
+                    <input type="number" id="cols" min="1" value="3" placeholder="열">
+                </div>
+            </div>
+            <div class="button-container">
+                <button onclick="createTable()">표 생성</button>
+                <button onclick="resetMarkdownTable()">초기화</button>
+            </div>
+            <div class="mode-toggle">
+                <label>
+                    <input type="checkbox" id="boldMode"> 볼드 모드
+                </label>
+            </div>
+            <div id="tableContainer" style="text-align: left;"></div>
+            <div class="button-container">
+                <button onclick="generateMarkdown()">Markdown 생성</button>
+                <button onclick="copyMarkdown()">복사</button>
+            </div>
+            <textarea id="markdownOutput" rows="10"></textarea>
+        </div>
+
+        <div id="homeContent" class="tabcontent">
+            <h3>안녕하세요.</h3>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/4.0.2/diff.min.js"></script>
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        function goHome() {
+            var tabcontent = document.getElementsByClassName("tabcontent");
+            for (var i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            var tablinks = document.getElementsByClassName("tablinks");
+            for (var i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById("homeContent").style.display = "block";
+        }
+
+        window.onload = function() {
+            document.querySelector('.tablinks').click();
+        };
+
+        function compareTexts() {
+            var text1 = document.getElementById("text1").value;
+            var text2 = document.getElementById("text2").value;
+            var leftColor = document.getElementById("leftColor").value;
+            var rightColor = document.getElementById("rightColor").value;
+
+            if (typeof Diff === 'undefined') {
+                console.error('Diff library is not loaded');
+                return;
+            }
+
+            var diff = Diff.diffChars(text1, text2);
+            var result1 = "";
+            var result2 = "";
+
+            diff.forEach(function(part) {
+                var color = part.added ? rightColor : part.removed ? leftColor : 'transparent';
+                var span = '<span style="background-color:' + color + '">' + escapeHtml(part.value) + '</span>';
+                if (part.added) {
+                    result2 += span;
+                } else if (part.removed) {
+                    result1 += span;
+                } else {
+                    result1 += span;
+                    result2 += span;
+                }
+            });
+
+            document.getElementById("result1").innerHTML = result1;
+            document.getElementById("result2").innerHTML = result2;
+        }
+
+        function escapeHtml(unsafe) {
+            return unsafe
+                 .replace(/&/g, "&amp;")
+                 .replace(/</g, "&lt;")
+                 .replace(/>/g, "&gt;")
+                 .replace(/"/g, "&quot;")
+                 .replace(/'/g, "&#039;")
+                 .replace(/\n/g, "<br>")
+                 .replace(/ /g, "&nbsp;");
+        }
+
+        function resetTextCompare() {
+            document.getElementById("text1").value = '';
+            document.getElementById("text2").value = '';
+            document.getElementById("result1").innerHTML = '';
+            document.getElementById("result2").innerHTML = '';
+        }
+
+        function splitText() {
+            var text = document.getElementById("inputText").value;
+            var delimiter = document.getElementById("delimiter").value || '@';
+            var splitResult = text.split(delimiter).map(function(item) {
+                if (item.startsWith('http://') || item.startsWith('https://')) {
+                    return '<a href="' + item + '" target="_blank">' + item + '</a>';
+                }
+                return item;
+            }).join('<br>');
+            document.getElementById("splitResult").innerHTML = splitResult;
+        }
+
+        function resetTextSplit() {
+            document.getElementById("inputText").value = '';
+            document.getElementById("delimiter").value = '';
+            document.getElementById("splitResult").innerHTML = '';
+        }
+
+        function copySplitText() {
+            var splitResult = document.getElementById("splitResult");
+            var range = document.createRange();
+            range.selectNode(splitResult);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand("copy");
+            window.getSelection().removeAllRanges();
+            alert("분리된 텍스트가 클립보드에 복사되었습니다.");
+        }
+
+        function createTable() {
+            var rows = document.getElementById("rows").value;
+            var cols = document.getElementById("cols").value;
+            var table = document.createElement("table");
+            for (var i = 0; i < rows; i++) {
+                var row = table.insertRow();
+                for (var j = 0; j < cols; j++) {
+                    var cell = row.insertCell();
+                    cell.contentEditable = true;
+                    cell.onclick = function() {
+                        if (document.getElementById("boldMode").checked) {
+                            this.classList.toggle("bold");
+                        }
+                    };
+                    cell.innerHTML = "&nbsp;";
+                }
+            }
+            document.getElementById("tableContainer").innerHTML = "";
+            document.getElementById("tableContainer").appendChild(table);
+        }
+
+        function resetMarkdownTable() {
+            document.getElementById("rows").value = 3;
+            document.getElementById("cols").value = 3;
+            document.getElementById("tableContainer").innerHTML = '';
+            document.getElementById("markdownOutput").value = '';
+        }
+
+        function generateMarkdown() {
+            var table = document.querySelector("#tableContainer table");
+            var markdown = "";
+            for (var i = 0; i < table.rows.length; i++) {
+                var row = table.rows[i];
+                for (var j = 0; j < row.cells.length; j++) {
+                    var cell = row.cells[j];
+                    var content = cell.textContent.trim() || " ";
+                    if (cell.classList.contains("bold")) {
+                        content = "**" + content + "**";
+                    }
+                    markdown += "| " + content + " ";
+                }
+                markdown += "|\n";
+                if (i === 0) {
+                    markdown += "|" + "---|".repeat(row.cells.length) + "\n";
+                }
+            }
+            document.getElementById("markdownOutput").value = markdown;
+        }
+
+        function copyMarkdown() {
+            var markdownOutput = document.getElementById("markdownOutput");
+            markdownOutput.select();
+            document.execCommand("copy");
+            alert("Markdown이 클립보드에 복사되었습니다.");
+        }
+    </script>
+</body>
+</html>
