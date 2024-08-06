@@ -79,7 +79,7 @@
             margin-top: 10px;
         }
         button {
-            background-color: #4CAF50;
+            background-color: #2e8b57;
             color: white;
             padding: 10px 20px;
             text-align: center;
@@ -99,14 +99,14 @@
             border-collapse: collapse;
         }
         td {
-            border: 1px solid #ddd;
-            padding: 8px;
+            border: 2px solid #bbb;
+            padding: 20px;
             text-align: left;
         }
         .bold {
             font-weight: bold;
         }
-        #splitResult {
+        #splitResult, #combineResult {
             max-height: 300px;
             overflow-y: auto;
             border: 1px solid #ccc;
@@ -115,7 +115,7 @@
             white-space: pre-wrap;
             word-wrap: break-word;
         }
-        #splitResult a {
+        #splitResult a, #combineResult a {
             color: blue;
             text-decoration: underline;
         }
@@ -138,7 +138,8 @@
         <div class="tab">
             <button class="tablinks" onclick="openTab(event, 'TextCompare')">텍스트 비교</button>
             <button class="tablinks" onclick="openTab(event, 'TextSplit')">텍스트 분리</button>
-            <button class="tablinks" onclick="openTab(event, 'MarkdownTable')">Markdown 표 만들기</button>
+            <button class="tablinks" onclick="openTab(event, 'TextCombine')">텍스트 결합</button>
+            <button class="tablinks" onclick="openTab(event, 'MarkdownTable')">마크다운 표 만들기</button>
         </div>
 
         <div id="TextCompare" class="tabcontent">
@@ -165,30 +166,46 @@
 
         <div id="TextSplit" class="tabcontent">
             <h3>텍스트 분리</h3>
-            <div class="delimiter-container">
-                <input type="text" id="delimiter" class="delimiter-input" placeholder="구분자 입력 (기본값: @)">
-            </div>
-            <div class="text-split-container">
-                <textarea id="inputText" class="input-large" placeholder="텍스트를 입력하세요"></textarea>
-                <div class="button-container">
-                    <button onclick="splitText()">분리</button>
-                    <button onclick="resetTextSplit()">초기화</button>
-                    <button onclick="copySplitText()">복사</button>
+            <div class="input-container">
+                <div class="input-area">
+                    <input type="text" id="delimiter" class="delimiter-input" placeholder="구분자 입력 (기본값: @)">
+                    <textarea id="inputText" class="input-large" placeholder="텍스트를 입력하세요"></textarea>
+                    <div class="button-container">
+                        <button onclick="splitText()">분리</button>
+                        <button onclick="resetTextSplit()">초기화</button>
+                        <button onclick="copySplitText()">복사</button>
+                    </div>
+                    <div id="splitResult" class="compare-result"></div>
                 </div>
-                <div id="splitResult" class="compare-result"></div>
+            </div>
+        </div>
+
+        <div id="TextCombine" class="tabcontent">
+            <h3>텍스트 결합</h3>
+            <div class="input-container">
+                <div class="input-area">
+                    <input type="text" id="combineDelimiter" class="delimiter-input" placeholder="구분자 입력 (기본값: @)">
+                    <textarea id="textToCombine" class="input-large" placeholder="텍스트를 입력하실 때 줄 단위로 구분해 주세요"></textarea>
+                    <div class="button-container">
+                        <button onclick="combineText()">결합</button>
+                        <button onclick="resetTextCombine()">초기화</button>
+                        <button onclick="copyTextCombine()">복사</button>
+                    </div>
+                    <div id="combineResult" class="compare-result"></div>
+                </div>
             </div>
         </div>
 
         <div id="MarkdownTable" class="tabcontent">
-            <h3>Markdown 표 만들기</h3>
+            <h3>마크다운 표 만들기</h3>
             <div class="input-container">
                 <div>
                     <label for="rows">행</label>
-                    <input type="number" id="rows" min="1" value="3" placeholder="행">
+                    <input type="number" id="rows" min="1" value="5" placeholder="행">
                 </div>
                 <div>
                     <label for="cols">열</label>
-                    <input type="number" id="cols" min="1" value="3" placeholder="열">
+                    <input type="number" id="cols" min="1" value="5" placeholder="열">
                 </div>
             </div>
             <div class="button-container">
@@ -197,19 +214,20 @@
             </div>
             <div class="mode-toggle">
                 <label>
-                    <input type="checkbox" id="boldMode"> 볼드 모드
+                    <input type="checkbox" id="boldMode"> 볼드 모드 (셀 클릭하면 On/Off)
                 </label>
             </div>
             <div id="tableContainer" style="text-align: left;"></div>
             <div class="button-container">
-                <button onclick="generateMarkdown()">Markdown 생성</button>
+                <button onclick="generateMarkdown()">마크다운 생성</button>
                 <button onclick="copyMarkdown()">복사</button>
             </div>
             <textarea id="markdownOutput" rows="10"></textarea>
         </div>
 
         <div id="homeContent" class="tabcontent">
-            <h3>안녕하세요.</h3>
+            <h3>안녕하세요.<br><br>This file was generated by AI.<br></h3>
+            <p><br>E-mail<br><br>junatrout27@gmail.com</p>
         </div>
     </div>
 
@@ -230,12 +248,13 @@
         }
 
         function goHome() {
-            var tabcontent = document.getElementsByClassName("tabcontent");
-            for (var i = 0; i < tabcontent.length; i++) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
             }
-            var tablinks = document.getElementsByClassName("tablinks");
-            for (var i = 0; i < tablinks.length; i++) {
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
                 tablinks[i].className = tablinks[i].className.replace(" active", "");
             }
             document.getElementById("homeContent").style.display = "block";
@@ -324,6 +343,31 @@
             alert("분리된 텍스트가 클립보드에 복사되었습니다.");
         }
 
+        function combineText() {
+            var text = document.getElementById("textToCombine").value;
+            var delimiter = document.getElementById("combineDelimiter").value || '@';
+            var combinedText = text.split('\n').join(delimiter + ' ');
+            document.getElementById("combineResult").textContent = combinedText;
+        }
+
+        function resetTextCombine() {
+            document.getElementById("textToCombine").value = '';
+            document.getElementById("combineDelimiter").value = '@';
+            document.getElementById("combineResult").textContent = '';
+        }
+
+        function copyCombinedText() {
+            var combineResult = document.getElementById("combineResult");
+            var range = document.createRange();
+            range.selectNode(combineResult);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand("copy");
+            window.getSelection().removeAllRanges();
+            alert("결합된 텍스트가 클립보드에 복사되었습니다.");
+        }
+
+
         function createTable() {
             var rows = document.getElementById("rows").value;
             var cols = document.getElementById("cols").value;
@@ -346,8 +390,8 @@
         }
 
         function resetMarkdownTable() {
-            document.getElementById("rows").value = 3;
-            document.getElementById("cols").value = 3;
+            document.getElementById("rows").value = 5;
+            document.getElementById("cols").value = 5;
             document.getElementById("tableContainer").innerHTML = '';
             document.getElementById("markdownOutput").value = '';
         }
