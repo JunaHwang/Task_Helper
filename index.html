@@ -5,131 +5,194 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>작업 도우미</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f5f5f5;
+            --text-color: #333;
+            --border-color: #bbb;
         }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+        }
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 20px;
         }
+        
         .site-title {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: bold;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .site-title a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .site-title a:hover {
+            color: #2c6cb0;
+        }
+        
+        .tab {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
             margin-bottom: 20px;
         }
-        .site-title a {
-            color: black;
-            text-decoration: none;
-        }
-        .site-title a:hover {
-            text-decoration: underline;
-        }
-        .tab {
-            overflow: hidden;
-            border: 1px solid #ccc;
-            background-color: #f1f1f1;
-            display: flex;
-            flex-wrap: wrap;
-        }
+        
         .tab button {
-            background-color: #e7e7e7;
-            color: black;
+            background-color: #fff;
+            color: var(--text-color);
             border: none;
             outline: none;
             cursor: pointer;
-            padding: 14px 16px;
-            transition: 0.3s;
-            flex-grow: 1;
+            padding: 14px 20px;
+            transition: all 0.3s ease;
+            margin: 5px;
+            border-radius: 5px;
+            font-weight: 500;
         }
+        
         .tab button:hover {
-            background-color: #ddd;
+            background-color: var(--primary-color);
+            color: #fff;
         }
+        
         .tab button.active {
-            background-color: #ccc;
+            background-color: var(--primary-color);
+            color: #fff;
         }
+        
         .tabcontent {
             display: none;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-top: none;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
+        
         .compare-container, .input-container {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
         }
+        
         .compare-result, .input-area {
             flex: 1 1 300px;
             min-width: 0;
         }
+        
         textarea, input[type="text"], input[type="number"] {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 16px;
         }
+        
         .button-container {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            margin-top: 10px;
+            margin-top: 20px;
         }
+        
         button {
-            background-color: #2e8b57;
+            background-color: var(--primary-color);
             color: white;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
-            border-radius: 4px;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
         }
+        
         button:hover {
-            background-color: #45a049;
+            background-color: #2c6cb0;
         }
+        
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 20px;
         }
+        
         td {
-            border: 2px solid #bbb;
-            padding: 20px;
+            border: 1px solid var(--border-color);
+            padding: 15px;
             text-align: left;
         }
+        
         .bold {
             font-weight: bold;
         }
+        
         #splitResult, #combineResult {
             max-height: 300px;
             overflow-y: auto;
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-top: 10px;
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            margin-top: 15px;
             white-space: pre-wrap;
             word-wrap: break-word;
+            background-color: #f9f9f9;
+            border-radius: 5px;
         }
+        
         #splitResult a, #combineResult a {
-            color: blue;
-            text-decoration: underline;
+            color: var(--primary-color);
+            text-decoration: none;
         }
+        
         .input-large {
             width: 100%;
-            height: 100px;
-            margin-bottom: 10px;
+            height: 150px;
+            margin-bottom: 15px;
             resize: vertical;
         }
+        
         .delimiter-input {
             width: 100%;
             max-width: 300px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
+        
+        h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        
+        
+        
+        a {
+            color: var(--text-color);
+            text-decoration: underline;  /* 밑줄 추가 */
+        }
+
+        a:visited {
+            color: var(--text-color);
+        }
+
+        a:hover {
+            color: var(--primary-color);
+            text-decoration: underline;  /* 호버 시에도 밑줄 유지 */
+        }
+        
+        
+        
     </style>
 </head>
 <body>
@@ -140,6 +203,7 @@
             <button class="tablinks" onclick="openTab(event, 'TextSplit')">텍스트 분리</button>
             <button class="tablinks" onclick="openTab(event, 'TextCombine')">텍스트 결합</button>
             <button class="tablinks" onclick="openTab(event, 'MarkdownTable')">마크다운 표 만들기</button>
+            <button class="tablinks" onclick="openTab(event, 'Prompt')">프롬프트</button>
         </div>
 
         <div id="TextCompare" class="tabcontent">
@@ -205,7 +269,7 @@
                 </div>
                 <div>
                     <label for="cols">열</label>
-                    <input type="number" id="cols" min="1" value="5" placeholder="열">
+                    <input type="number" id="cols" min="1" value="3" placeholder="열">
                 </div>
             </div>
             <div class="button-container">
@@ -214,7 +278,8 @@
             </div>
             <div class="mode-toggle">
                 <label>
-                    <input type="checkbox" id="boldMode"> 볼드 모드 (셀 클릭하면 On/Off)
+                    <br>
+                    <input type="checkbox" id="boldMode"> 볼드 모드 (셀 클릭으로 볼드 적용/해제)
                 </label>
             </div>
             <div id="tableContainer" style="text-align: left;"></div>
@@ -225,9 +290,121 @@
             <textarea id="markdownOutput" rows="10"></textarea>
         </div>
 
+
+        <div id="Prompt" class="tabcontent">
+            <h3>프롬프트</h3>
+            <div class="form-container">
+                <label for="promptSelect">유형:</label>
+                <select id="promptSelect">
+                    <option value="" disabled selected>선택</option>
+                    <option value="당신은 경험 많은 기자입니다. 아래 ``` 로 구분된 텍스트를 객관적이고 사실적인 뉴스 기사 형식으로 재작성해주세요. 다음 요소를 포함해야 합니다:
+- 눈길을 끄는 헤드라인
+- 핵심 정보를 요약한 리드 문단
+- 5W1H (누가, 무엇을, 언제, 어디서, 왜, 어떻게)를 포함한 본문
+- 관련 인용구나 통계 (가능한 경우)
+- 간결하고 명확한 문체 사용
+
+만약 주어진 텍스트에서 위의 지시사항을 모두 이행하기 어렵다면, 추가 정보가 필요한 부분에 대해 질문해주세요. 추가 정보 없이 진행해야 한다면, 수행할 수 없는 부분을 명시하고 나머지 가능한 부분에 대해서만 작업을 진행해주세요.">뉴스 기사</option>
+                    
+                    <option value="당신은 해당 분야의 전문 연구자입니다. 아래 ``` 로 구분된 텍스트를 학술 논문 형식으로 재구성해주세요. 다음 요소를 포함해야 합니다:
+- 제목
+- 초록 (연구 목적, 방법, 결과, 결론을 간략히 요약)
+- 서론 (연구 배경 및 목적)
+- 연구 방법
+- 결과
+- 고찰
+- 결론
+- 참고문헌 (필요시)
+
+학술적이고 객관적인 어조를 유지하며, 전문 용어를 적절히 사용해주세요.
+
+만약 주어진 텍스트에서 위의 지시사항을 모두 이행하기 어렵다면, 추가 정보가 필요한 부분에 대해 질문해주세요. 추가 정보 없이 진행해야 한다면, 수행할 수 없는 부분을 명시하고 나머지 가능한 부분에 대해서만 작업을 진행해주세요.">논문</option>
+                    
+                    <option value="당신은 인기 있는 블로거입니다. 아래 ``` 로 구분된 텍스트를 바탕으로 흥미롭고 정보가 풍부한 블로그 포스트를 작성해주세요. 다음 요소를 포함해야 합니다:
+- 눈길을 끄는 제목
+- 흥미로운 도입부
+- 주요 내용을 소제목으로 구분
+- 개인적인 경험이나 의견 추가
+- 독자와의 상호작용을 유도하는 질문이나 호소
+- 관련 이미지나 링크 제안 (선택사항)
+
+친근하고 대화체적인 문체를 사용하되, 정보의 정확성을 유지해주세요.
+
+만약 주어진 텍스트에서 위의 지시사항을 모두 이행하기 어렵다면, 추가 정보가 필요한 부분에 대해 질문해주세요. 추가 정보 없이 진행해야 한다면, 수행할 수 없는 부분을 명시하고 나머지 가능한 부분에 대해서만 작업을 진행해주세요.">블로그</option>
+                    
+                    <option value="당신은 마케팅 전문가입니다. 아래 ``` 로 구분된 텍스트를 바탕으로 매력적이고 효과적인 홍보 문구를 작성해주세요. 다음 요소를 포함해야 합니다:
+- 간결하고 강렬한 메시지
+- 독자의 관심을 끌 수 있는 요소
+- 제품이나 서비스의 주요 장점 강조
+- 행동을 유도하는 콜 투 액션
+
+만약 주어진 텍스트에서 위의 지시사항을 모두 이행하기 어렵다면, 추가 정보가 필요한 부분에 대해 질문해주세요. 추가 정보 없이 진행해야 한다면, 수행할 수 없는 부분을 명시하고 나머지 가능한 부분에 대해서만 작업을 진행해주세요.">마케팅/홍보 문구</option>
+                    
+                    <option value="당신은 소셜 미디어 전문가입니다. 아래 ``` 로 구분된 텍스트를 바탕으로 매력적이고 간결한 SNS 글을 작성해주세요. 다음 요소를 포함해야 합니다:
+- 짧고 강렬한 메시지
+- 해시태그 제안 (관련된 경우)
+- 독자의 참여를 유도하는 질문이나 콜 투 액션
+
+만약 주어진 텍스트에서 위의 지시사항을 모두 이행하기 어렵다면, 추가 정보가 필요한 부분에 대해 질문해주세요. 추가 정보 없이 진행해야 한다면, 수행할 수 없는 부분을 명시하고 나머지 가능한 부분에 대해서만 작업을 진행해주세요.">SNS</option>
+
+                    <option value="당신은 정중한 편지를 작성하는 전문가입니다. 아래 ``` 로 구분된 텍스트를 바탕으로 포멀한 편지를 작성해주세요. 다음 요소를 포함해야 합니다:
+- 적절한 인사말
+- 본문 내용 (목적에 맞는 설명)
+- 정중한 마무리 인사
+
+만약 주어진 텍스트에서 위의 지시사항을 모두 이행하기 어렵다면, 추가 정보가 필요한 부분에 대해 질문해주세요. 추가 정보 없이 진행해야 한다면, 수행할 수 없는 부분을 명시하고 나머지 가능한 부분에 대해서만 작업을 진행해주세요.">편지</option>
+
+                    <option value="당신은 뛰어난 연설가입니다. 아래 ``` 로 구분된 텍스트를 바탕으로 감동적이고 설득력 있는 연설문을 작성해주세요. 다음 요소를 포함해야 합니다:
+- 강렬한 도입부
+- 주요 메시지와 논리적 전개
+- 청중의 공감을 이끌어내는 요소
+- 감정적인 마무리
+
+만약 주어진 텍스트에서 위의 지시사항을 모두 이행하기 어렵다면, 추가 정보가 필요한 부분에 대해 질문해주세요. 추가 정보 없이 진행해야 한다면, 수행할 수 없는 부분을 명시하고 나머지 가능한 부분에 대해서만 작업을 진행해주세요.">연설문</option>
+
+                    <option value="당신은 인기 유튜버입니다. 아래 ``` 로 구분된 텍스트를 바탕으로 흥미롭고 매력적인 유튜브 스크립트를 작성해주세요. 다음 요소를 포함해야 합니다:
+- 강렬한 도입부
+- 주요 내용 (소제목으로 구분)
+- 시청자의 참여를 유도하는 질문이나 콜 투 액션
+- 마무리 및 구독 유도 메시지
+
+만약 주어진 텍스트에서 위의 지시사항을 모두 이행하기 어렵다면, 추가 정보가 필요한 부분에 대해 질문해주세요. 추가 정보 없이 진행해야 한다면, 수행할 수 없는 부분을 명시하고 나머지 가능한 부분에 대해서만 작업을 진행해주세요.">유튜브</option>
+
+
+                </select>
+                <textarea id="promptInputText" class="input-large" placeholder="텍스트를 입력하세요"></textarea>
+                <div class="button-container">
+                    <button onclick="generatePrompt()">프롬프트 생성</button>
+                    <button onclick="resetPrompt()">초기화</button>
+                    <button onclick="copyPrompt()">복사</button>
+                </div>
+                <div id="promptResult" class="compare-result"></div>
+            </div>
+        </div>
+
+
         <div id="homeContent" class="tabcontent">
-            <h3>안녕하세요.<br><br>This file was generated by AI.<br></h3>
-            <p><br>E-mail<br><br>junatrout27@gmail.com</p>
+        
+            <h3>This page was generated by AI<br><br>안녕하세요.<br></h3>
+            
+            <h3>현재 프롬프트 기능은 사용 가능하지만, 아직 초안 상태입니다. 향후 수정될 예정입니다.</h3>
+            
+            <li><a href="https://wikidocs.net/67060" target="_blank">위키독스 IT 글쓰기와 번역 노트</a></li>
+            <li><a href="https://www.korean.go.kr/front/etcData/etcDataView.do?mn_id=208&etc_seq=529" target="_blank">국립국어원 공공언어 바로쓰기</a></li>
+            
+            <li><a href="https://www.promptingguide.ai/kr" target="_blank">프롬프트 엔지니어링 가이드</a></li>
+            <li><a href="https://modulabs.co.kr/blog/prompt-engineering/" target="_blank">프롬프트 엔지니어링 방법 예시 꿀팁 대방출 (feat. 앤드류 응)</a></li>
+            
+            <li><a href="https://dillinger.io/" target="_blank">마크다운 미리보기</a></li>
+            <li><a href="https://wepplication.github.io/tools/" target="_blank">온라인 도구 모음</a></li>
+            <li><a href="https://xn--yq5bk9r.com/blog/text-remove-html#google_vignette" target="_blank">HTML 태그 제거기</a></li>
+            
+            
+            
+            
+            
+            <p><br>E-mail : junatrout27@gmail.com</p>
+            
         </div>
     </div>
 
@@ -259,10 +436,12 @@
             }
             document.getElementById("homeContent").style.display = "block";
         }
-
+        
+        
         window.onload = function() {
-            document.querySelector('.tablinks').click();
+            goHome(); // 페이지 로드 시 '홈' 탭 열기
         };
+
 
         function compareTexts() {
             var text1 = document.getElementById("text1").value;
@@ -334,38 +513,47 @@
 
         function copySplitText() {
             var splitResult = document.getElementById("splitResult");
+            if (!splitResult.textContent.trim()) {
+                alert("복사할 내용이 없습니다.");
+                return;
+            }
             var range = document.createRange();
             range.selectNode(splitResult);
             window.getSelection().removeAllRanges();
             window.getSelection().addRange(range);
             document.execCommand("copy");
             window.getSelection().removeAllRanges();
-            alert("분리된 텍스트가 클립보드에 복사되었습니다.");
+            alert("복사되었습니다!");
         }
 
         function combineText() {
             var text = document.getElementById("textToCombine").value;
             var delimiter = document.getElementById("combineDelimiter").value || '@';
-            var combinedText = text.split('\n').join(delimiter + ' ');
+            var combinedText = text.split('\n').join(delimiter + '');
             document.getElementById("combineResult").textContent = combinedText;
         }
 
         function resetTextCombine() {
             document.getElementById("textToCombine").value = '';
-            document.getElementById("combineDelimiter").value = '@';
+            document.getElementById("combineDelimiter").value = '';
             document.getElementById("combineResult").textContent = '';
         }
 
-        function copyCombinedText() {
-            var combineResult = document.getElementById("combineResult");
-            var range = document.createRange();
-            range.selectNode(combineResult);
-            window.getSelection().removeAllRanges();
-            window.getSelection().addRange(range);
-            document.execCommand("copy");
-            window.getSelection().removeAllRanges();
-            alert("결합된 텍스트가 클립보드에 복사되었습니다.");
+        async function copyTextCombine() {
+            var combineResult = document.getElementById("combineResult").textContent;
+            if (!combineResult.trim()) {
+                alert("복사할 내용이 없습니다.");
+                return;
+            }
+            try {
+                await navigator.clipboard.writeText(combineResult);
+                alert("복사되었습니다!");
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+                alert("복사에 실패했습니다. 다시 시도해 주세요.");
+            }
         }
+
 
 
         function createTable() {
@@ -391,7 +579,7 @@
 
         function resetMarkdownTable() {
             document.getElementById("rows").value = 5;
-            document.getElementById("cols").value = 5;
+            document.getElementById("cols").value = 3;
             document.getElementById("tableContainer").innerHTML = '';
             document.getElementById("markdownOutput").value = '';
         }
@@ -419,10 +607,50 @@
 
         function copyMarkdown() {
             var markdownOutput = document.getElementById("markdownOutput");
+            if (!markdownOutput.value.trim()) {
+                alert("복사할 내용이 없습니다.");
+                return;
+            }
             markdownOutput.select();
             document.execCommand("copy");
-            alert("Markdown이 클립보드에 복사되었습니다.");
+            alert("복사되었습니다!");
         }
+
+
+        function generatePrompt() {
+            var promptSelect = document.getElementById("promptSelect");
+            var promptInputText = document.getElementById("promptInputText").value;
+            var promptResult = document.getElementById("promptResult");
+
+            if (!promptSelect.value) {
+                alert("프롬프트 유형을 선택하세요.");
+            }
+
+            var resultText = promptSelect.value ? `${promptSelect.value}\n\`\`\`\n${promptInputText}\n\`\`\`` : `${promptInputText}`;
+
+            promptResult.innerText = resultText;
+        }
+
+        function resetPrompt() {
+            document.getElementById("promptSelect").value = "";
+            document.getElementById("promptInputText").value = "";
+            document.getElementById("promptResult").innerText = "";
+        }
+
+        function copyPrompt() {
+            var promptResult = document.getElementById("promptResult").innerText;
+            if (!promptResult.trim()) {
+                alert("복사할 내용이 없습니다.");
+                return;
+            }
+            navigator.clipboard.writeText(promptResult)
+                .then(() => alert("복사되었습니다!"))
+                .catch(err => alert("복사 실패: " + err));
+        }
+
+
+
+
     </script>
 </body>
 </html>
