@@ -270,18 +270,22 @@ document.getElementById('resetTable').addEventListener('click', resetTable);
 
 
 function generatePrompt() {
-    var promptSelect = document.getElementById("promptSelect");
+    var promptSelect = document.getElementById("promptSelect").value;
     var promptInputText = document.getElementById("promptInputText").value;
     var promptResult = document.getElementById("promptResult");
 
-    if (!promptSelect.value) {
+    if (!promptSelect) {
         alert("프롬프트 유형을 선택하세요.");
+        return;
     }
 
-    var resultText = promptSelect.value ? `${promptSelect.value}\n\`\`\`\n${promptInputText}\n\`\`\`` : `${promptInputText}`;
+    // <기존_텍스트> 태그 사이에 사용자가 입력한 텍스트를 삽입
+    var resultText = promptSelect.replace('<기존_텍스트></기존_텍스트>', `<기존_텍스트>${promptInputText}</기존_텍스트>`);
 
     promptResult.innerText = resultText;
 }
+
+
 
 function resetPrompt() {
     document.getElementById("promptSelect").value = "";
