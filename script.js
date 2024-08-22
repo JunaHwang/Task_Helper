@@ -280,7 +280,7 @@ function generatePrompt() {
     }
 
     // <기존_텍스트> 태그 사이에 사용자가 입력한 텍스트를 삽입
-    var resultText = promptSelect.replace('<기존_텍스트></기존_텍스트>', `<기존_텍스트>${promptInputText}</기존_텍스트>`);
+    var resultText = promptSelect.replace('<기존_텍스트></기존_텍스트>', `<기존_텍스트>\n${promptInputText}\n</기존_텍스트>`);
 
     promptResult.innerText = resultText;
 }
