@@ -43,7 +43,7 @@ function compareTexts() {
     result1.innerHTML = '';
     result2.innerHTML = '';
 
-    const diff = Diff.diffChars(text1, text2);
+    const diff = Diff.diffWords(text1, text2);
 
     diff.forEach((part) => {
         const span1 = document.createElement('span');
@@ -51,15 +51,15 @@ function compareTexts() {
 
         if (part.added) {
             span2.style.backgroundColor = rightColor;
-            span2.textContent = part.value;
+            span2.innerHTML = escapeHtml(part.value);
             result2.appendChild(span2);
         } else if (part.removed) {
             span1.style.backgroundColor = leftColor;
-            span1.textContent = part.value;
+            span1.innerHTML = escapeHtml(part.value);
             result1.appendChild(span1);
         } else {
-            span1.textContent = part.value;
-            span2.textContent = part.value;
+            span1.innerHTML = escapeHtml(part.value);
+            span2.innerHTML = escapeHtml(part.value);
             result1.appendChild(span1);
             result2.appendChild(span2);
         }
