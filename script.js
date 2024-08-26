@@ -68,13 +68,13 @@ function compareTexts() {
 
 function escapeHtml(unsafe) {
     return unsafe
-         .replace(/&/g, "&amp;")
-         .replace(/</g, "&lt;")
-         .replace(/>/g, "&gt;")
-         .replace(/"/g, "&quot;")
-         .replace(/'/g, "&#039;")
-         .replace(/\n/g, "<br>")
-         .replace(/ /g, "&nbsp;");
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;")
+        .replace(/\n/g, "<br>")
+        .replace(/ /g, "&nbsp;");
 }
 
 function resetTextCompare() {
@@ -105,12 +105,12 @@ function resetTextSplit() {
 function copySplitText() {
     var splitResult = document.getElementById("splitResult").textContent;
     if (!splitResult.trim()) {
-        alert("복사할 내용이 없습니다.");
+        showToast("복사할 내용이 없습니다.", 'warning');
         return;
     }
     navigator.clipboard.writeText(splitResult)
-        .then(() => alert("복사되었습니다!"))
-        .catch(err => alert("복사 실패: " + err));
+        .then(() => showToast("복사되었습니다!"))
+        .catch(err => showToast("복사 실패: " + err, 'warning'));
 }
 
 function combineText() {
@@ -129,12 +129,12 @@ function resetTextCombine() {
 function copyTextCombine() {
     var combineResult = document.getElementById("combineResult").textContent;
     if (!combineResult.trim()) {
-        alert("복사할 내용이 없습니다.");
+        showToast("복사할 내용이 없습니다.", 'warning');
         return;
     }
     navigator.clipboard.writeText(combineResult)
-        .then(() => alert("복사되었습니다!"))
-        .catch(err => alert("복사 실패: " + err));
+        .then(() => showToast("복사되었습니다!"))
+        .catch(err => showToast("복사 실패: " + err, 'warning'));
 }
 
 
@@ -149,7 +149,7 @@ let table = [
 function renderTable() {
     const tableContainer = document.getElementById('tableContainer');
     let html = '<table>';
-    
+
     table.forEach((row, rowIndex) => {
         html += '<tr>';
         row.forEach((cell, cellIndex) => {
@@ -161,7 +161,7 @@ function renderTable() {
         });
         html += '</tr>';
     });
-    
+
     html += '</table>';
     tableContainer.innerHTML = html;
 
@@ -221,7 +221,7 @@ function tableToMarkdown() {
 function copyMarkdown() {
     const markdown = tableToMarkdown();
     navigator.clipboard.writeText(markdown).then(() => {
-        alert('마크다운이 클립보드에 복사되었습니다.');
+        showToast('마크다운이 클립보드에 복사되었습니다.');
     });
 }
 
@@ -229,11 +229,11 @@ function loadMarkdown() {
     const markdownInput = document.getElementById('markdownInput');
     const markdown = markdownInput.value.trim();
     const rows = markdown.split('\n');
-    
-    table = rows.filter((row, index) => index !== 1).map(row => 
+
+    table = rows.filter((row, index) => index !== 1).map(row =>
         row.split('|').slice(1, -1).map(cell => cell.trim())
     );
-    
+
     renderTable();
 }
 
@@ -246,7 +246,7 @@ document.getElementById('loadMarkdown').addEventListener('click', loadMarkdown);
 
 document.getElementById('tableContainer').addEventListener('input', () => {
     const rows = document.querySelectorAll('tr');
-    table = Array.from(rows).map(row => 
+    table = Array.from(rows).map(row =>
         Array.from(row.children).map(cell => cell.textContent)
     );
 });
@@ -273,9 +273,10 @@ function generatePrompt() {
     var promptSelect = document.getElementById("promptSelect").value;
     var promptInputText = document.getElementById("promptInputText").value;
     var promptResult = document.getElementById("promptResult");
+    navigator.clipboard.writeText(promptResult)
 
     if (!promptSelect) {
-        alert("프롬프트 유형을 선택하세요.");
+        showToast("프롬프트 유형을 선택하세요.", 'warning');
         return;
     }
 
@@ -296,11 +297,32 @@ function resetPrompt() {
 function copyPrompt() {
     var promptResult = document.getElementById("promptResult").innerText;
     if (!promptResult.trim()) {
-        alert("복사할 내용이 없습니다.");
+        showToast("복사할 내용이 없습니다.", 'warning');
         return;
     }
     navigator.clipboard.writeText(promptResult)
-        .then(() => alert("복사되었습니다!"))
-        .catch(err => alert("복사 실패: " + err));
+        .then(() => showToast("복사되었습니다!"))
+        .catch(err => showToast("복사 실패: " + err, 'warning'));
 }
 
+
+
+function showToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+
+    // 타입에 따라 클래스 추가
+    if (type === 'success') {
+        toast.classList.add('toast-success');
+    } else if (type === 'warning') {
+        toast.classList.add('toast-warning');
+    }
+
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.classList.add('fade-out');
+        toast.addEventListener('transitionend', () => toast.remove());
+    }, 2000);
+}
