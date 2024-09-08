@@ -334,7 +334,7 @@ function showToast(message, type = 'success') {
 	}, 2000);
 }
 
-const fileInput = document.getElementById('file-input');
+const fileInputImage = document.getElementById('file-input-image');
 const image = document.getElementById('image');
 const canvas = document.getElementById('canvas');
 const croppedImagesContainer = document.getElementById('cropped-images-container');
@@ -352,7 +352,7 @@ let rectangles = [];
 let undoStack = []; // 변경 사항을 저장하는 스택
 let redoStack = []; // 되돌리기 취소 스택
 
-fileInput.addEventListener('change', handleFileSelect);
+fileInputImage.addEventListener('change', handleFileSelect);
 canvas.addEventListener('mousedown', startDrawing);
 canvas.addEventListener('mousemove', drawRectangle);
 canvas.addEventListener('mouseup', finishDrawing);
@@ -396,29 +396,27 @@ function startDrawing(event) {
 }
 
 function drawRectangle(event) {
-    if (!isDrawing) return;
+    if (!isDrawing) return; // 드래그 중이 아니면 반환
+
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
     const width = x - startX;
     const height = y - startY;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(image, 0, 0);
+    // 기존 좌표와 새로 그리는 사각형 모두를 그리기 위해 캔버스를 초기화합니다.
+    drawRectangles(); 
 
-    rectangles.forEach((r, i) => {
-        ctx.strokeStyle = 'red';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(r.x, r.y, r.width, r.height);
-        ctx.font = '12px Arial';
-        ctx.fillStyle = 'red';
-        ctx.fillText(i + 1, r.x, r.y - 5);
-    });
-
-    ctx.strokeStyle = 'red';
+    // 현재 드래그 중인 사각형을 그라디언트로 그립니다.
+    const gradient = ctx.createLinearGradient(startX, startY, x, y);
+    gradient.addColorStop(0, 'lime'); // 녹색
+    gradient.addColorStop(1, 'blue'); // 파란색
+    
+    ctx.strokeStyle = gradient;
     ctx.lineWidth = 2;
     ctx.strokeRect(startX, startY, width, height);
 }
+
 
 function finishDrawing(event) {
     if (!isDrawing) return;
@@ -428,11 +426,17 @@ function finishDrawing(event) {
     const width = x - startX;
     const height = y - startY;
 
+    // 좌표 정수로 변환
+    const xmin = Math.floor(Math.min(startX, x));
+    const ymin = Math.floor(Math.min(startY, y));
+    const xmax = Math.floor(Math.max(startX, x));
+    const ymax = Math.floor(Math.max(startY, y));
+
     const newRect = {
-        x: Math.floor(startX),
-        y: Math.floor(startY),
-        width: Math.floor(width),
-        height: Math.floor(height)
+        x: xmin,
+        y: ymin,
+        width: xmax - xmin,
+        height: ymax - ymin
     };
 
     // 현재 상태를 되돌리기 스택에 저장
@@ -444,6 +448,8 @@ function finishDrawing(event) {
     updateJSONDisplay();
     updateCroppedImages();
     isDrawing = false;
+
+    drawRectangles(); // 새 사각형 그리기
 }
 
 function undoLastAction() {
@@ -451,18 +457,7 @@ function undoLastAction() {
     redoStack.push([...rectangles]); // 현재 상태를 되돌리기 취소 스택에 저장
     rectangles = undoStack.pop(); // 스택에서 마지막 상태를 꺼내서 현재 상태로 설정
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(image, 0, 0);
-
-    rectangles.forEach((r, i) => {
-        ctx.strokeStyle = 'red';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(r.x, r.y, r.width, r.height);
-        ctx.font = '12px Arial';
-        ctx.fillStyle = 'red';
-        ctx.fillText(i + 1, r.x, r.y - 5);
-    });
-
+    drawRectangles(); // 사각형을 다시 그리기
     updateCoordinatesDisplay();
     updateJSONDisplay();
     updateCroppedImages();
@@ -473,18 +468,7 @@ function redoLastAction() {
     undoStack.push([...rectangles]); // 현재 상태를 되돌리기 스택에 저장
     rectangles = redoStack.pop(); // 스택에서 마지막 상태를 꺼내서 현재 상태로 설정
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(image, 0, 0);
-
-    rectangles.forEach((r, i) => {
-        ctx.strokeStyle = 'red';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(r.x, r.y, r.width, r.height);
-        ctx.font = '12px Arial';
-        ctx.fillStyle = 'red';
-        ctx.fillText(i + 1, r.x, r.y - 5);
-    });
-
+    drawRectangles(); // 사각형을 다시 그리기
     updateCoordinatesDisplay();
     updateJSONDisplay();
     updateCroppedImages();
@@ -492,10 +476,10 @@ function redoLastAction() {
 
 function updateCoordinatesDisplay() {
     const coordinates = rectangles.map(r => {
-        const xmin = r.x;
-        const ymin = r.y;
-        const xmax = r.x + r.width;
-        const ymax = r.y + r.height;
+        const xmin = Math.floor(r.x);
+        const ymin = Math.floor(r.y);
+        const xmax = Math.floor(r.x + r.width);
+        const ymax = Math.floor(r.y + r.height);
         return `${xmin} ${ymin} ${xmax} ${ymin} ${xmax} ${ymax} ${xmin} ${ymax}##::`;
     }).join('\n');
 
@@ -579,7 +563,7 @@ function resetCanvas() {
     updateJSONDisplay();
     updateCroppedImages();
     image.src = ''; 
-    fileInput.value = ''; 
+    fileInputImage.value = ''; 
 	
 	canvas.width = 0;
     canvas.height = 0;
@@ -633,4 +617,155 @@ function resetData() {
     updateCoordinatesDisplay();
     updateJSONDisplay();
     updateCroppedImages();
+}
+
+
+const coordinatesInput = document.getElementById('coordinates-input');
+const loadCoordinatesButton = document.getElementById('load-coordinates-button');
+
+// 좌표 로드 버튼 클릭 시
+loadCoordinatesButton.addEventListener('click', () => {
+    const inputText = coordinatesInput.value.trim();
+    if (inputText) {
+        loadExistingCoordinates(inputText);
+    }
+});
+
+// 기존 좌표 로드 함수
+function loadExistingCoordinates(text) {
+    const lines = text.split('\n');
+    existingRectangles = []; // 기존 좌표 배열 초기화
+    lines.forEach(line => {
+        const [coordinates, label] = line.split('##::');
+        if (coordinates) {
+            const coords = coordinates.trim().split(' ').map(Number);
+            if (coords.length === 8) {
+                const [x1, y1, x2, y2, x3, y3, x4, y4] = coords;
+                existingRectangles.push({ x1, y1, x2, y2, x3, y3, x4, y4 });
+            }
+        }
+    });
+    drawRectangles(); // 기존 좌표 그리기
+}
+
+// 캔버스에 사각형을 그리는 함수
+function drawRectangleOnCanvas(x1, y1, x2, y2, x3, y3, x4, y4) {
+    ctx.strokeStyle = 'lime'; // 형광 녹색
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.lineTo(x3, y3);
+    ctx.lineTo(x4, y4);
+    ctx.closePath();
+    ctx.stroke();
+}
+
+let existingRectangles = []; // 기존 좌표로 그린 사각형
+
+function drawRectangles() {
+    // 캔버스를 초기화하고 이미지를 다시 그립니다.
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(image, 0, 0);
+
+    // 기존 좌표 사각형 그리기 (조건에 따라 표시 여부 결정)
+    if (showExistingCoordinates) {
+        existingRectangles.forEach(rect => {
+            const x1 = Math.floor(rect.x1);
+            const y1 = Math.floor(rect.y1);
+            const x2 = Math.floor(rect.x2);
+            const y2 = Math.floor(rect.y2);
+            const x3 = Math.floor(rect.x3);
+            const y3 = Math.floor(rect.y3);
+            const x4 = Math.floor(rect.x4);
+            const y4 = Math.floor(rect.y4);
+
+            ctx.strokeStyle = 'orange'; // 형광 주황색
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.lineTo(x3, y3);
+            ctx.lineTo(x4, y4);
+            ctx.closePath();
+            ctx.stroke();
+        });
+    }
+
+    // 새로 그린 사각형 그리기 (그라디언트)
+    rectangles.forEach((r, i) => {
+        const xmin = Math.floor(r.x);
+        const ymin = Math.floor(r.y);
+        const xmax = Math.floor(r.x + r.width);
+        const ymax = Math.floor(r.y + r.height);
+
+        const gradient = ctx.createLinearGradient(xmin, ymin, xmax, ymax);
+        gradient.addColorStop(0, 'lime'); // 녹색
+        gradient.addColorStop(1, 'blue'); // 파란색
+        
+        ctx.strokeStyle = gradient; // 그라디언트 적용
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(xmin, ymin);
+        ctx.lineTo(xmax, ymin);
+        ctx.lineTo(xmax, ymax);
+        ctx.lineTo(xmin, ymax);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.font = '12px Arial';
+        ctx.fillStyle = 'lime'; // 녹색
+        ctx.fillText(i + 1, xmin, ymin - 5);
+    });
+}
+
+const resetExistingCoordinatesButton = document.getElementById('reset-existing-coordinates-button');
+resetExistingCoordinatesButton.addEventListener('click', resetExistingCoordinates);
+
+// 기존 좌표 초기화 함수
+function resetExistingCoordinates() {
+    // 기존 좌표를 저장하는 배열을 초기화
+    existingRectangles = [];
+    
+    // 캔버스를 초기화하고 이미지를 다시 그립니다.
+    drawRectangles(); 
+    
+    showToast('기존 좌표가 초기화되었습니다!');
+}
+
+const toggleExistingCoordinatesButton = document.getElementById('toggle-existing-coordinates-button');
+let showExistingCoordinates = true; // 기본적으로 기존 좌표를 표시하도록 설정
+
+toggleExistingCoordinatesButton.addEventListener('click', toggleExistingCoordinates);
+document.addEventListener('keydown', function(event) {
+    if (event.ctrlKey && event.code === 'Space') {
+        event.preventDefault(); // 기본 동작 방지
+        toggleExistingCoordinates();
+    }
+});
+
+function toggleExistingCoordinates() {
+    showExistingCoordinates = !showExistingCoordinates; // 현재 상태를 반전시킵니다.
+
+    drawRectangles(); // 캔버스를 다시 그려줍니다.
+    
+    if (showExistingCoordinates) {
+        showToast('기존 좌표가 표시됩니다.');
+    } else {
+        showToast('기존 좌표가 숨겨졌습니다.');
+    }
+}
+
+const fileInputTxt = document.getElementById('file-input-txt');
+
+fileInputTxt.addEventListener('change', handleTxtFileSelect);
+
+function handleTxtFileSelect(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            coordinatesInput.value = e.target.result;
+        };
+        reader.readAsText(file);
+    }
 }

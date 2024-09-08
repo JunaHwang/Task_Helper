@@ -27,24 +27,36 @@
 		<div id="coordinate-check" class="tabcontent">
 			<h3>좌표 확인</h3>
 			<p>사용 방법: 이미지 업로드 후 드래그</p>
-			<p>되돌리기: Ctrl+Z</p>
-			<p>다시실행: Ctrl+Shift+Z</p>
+				<p>
+				되돌리기: Ctrl+Z<br>다시실행: Ctrl+Shift+Z<br>폴리곤 토글: Ctrl+Space
+				</p>
 			<div>
-				<input type="file" id="file-input" />
+				이미지<br>
+				<input type="file" id="file-input-image" />
 			</div>
 				<div id="canvas-container">
 					<img id="image" src="" alt="Upload an image">
 					<canvas id="canvas"></canvas>
 				</div>
 				<div class="controls">
-					<button id="copy-button">좌표 복사</button>
-					<button id="copy-json-button">JSON 복사</button>
 					<button id="reset-button">초기화</button>
 					<button id="undo-button">되돌리기</button>
-					<button id="redo-button">다시실행</button>
+					<button id="redo-button">다시실행</button><br><br>
 				</div>
+					<div class="input-area">
+						<div>
+							텍스트<br>
+							<input type="file" id="file-input-txt" accept=".txt" />
+						</div>
+						<textarea id="coordinates-input" class="input-large" placeholder="좌표를 입력하세요"></textarea>
+						<button id="load-coordinates-button">기존 폴리곤 적용</button>
+						<button id="reset-existing-coordinates-button">폴리곤 초기화</button>
+						<button id="toggle-existing-coordinates-button">토글</button>
+					</div>
 				<div id="coordinates-cropped-container">
 					<div id="cropped-images-container"></div>
+						<button id="copy-button">좌표 복사</button>
+						<button id="copy-json-button">JSON 복사</button>
 					<div id="coordinates-container" class="common-container">
 						<div id="coordinates"></div>
 					</div>
@@ -133,7 +145,7 @@
 			<button id="copyMarkdown">복사</button>
 			<br>
 			<br>
-			<textarea id="markdownInput" placeholder="마크다운 코드를 여기에 붙여넣으세요"></textarea>
+			<textarea id="markdownInput" class= "input-large" placeholder="마크다운 코드를 여기에 붙여넣으세요"></textarea>
 			<button id="loadMarkdown">불러오기</button>
 		</div>
 		<div id="Prompt" class="tabcontent">

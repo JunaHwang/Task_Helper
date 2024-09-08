@@ -1,8 +1,9 @@
 :root {
-	--primary-color:#4a90e2;
-	--secondary-color:#f1f3f5;
-	--text-color:#333;
-	--border-color:#bbb;
+	--primary-color: #4a90e2;
+	--secondary-color: #f1f3f5;
+	--another-color: #4e76a3;
+	--text-color: #333;
+	--border-color: #bbb;
 }
 body {
 	font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
@@ -157,6 +158,13 @@ h3 {
 	color:var(--primary-color);
 	margin-bottom:20px;
 }
+
+h4 {
+	color: var(--another-color);
+	margin-bottom: 20px;
+}
+
+
 a {
 	color:var(--text-color);
 	text-decoration:underline;
@@ -286,9 +294,9 @@ a:hover {
     background-color: #f9f9f9;
     margin: 0;
     overflow-y: auto;
-    /*height: 200px; /* 세로 폭을 고정 (예: 200px) */
+    height: 250px;
     box-sizing: border-box;
-    /*width: 300px; /* 너비를 고정 (예: 300px) */
+    width: 400px;
 }
 
 /* 좌표 출력 */
@@ -301,6 +309,34 @@ a:hover {
 
 /* HTML에서 공통 스타일을 적용하기 위해 클래스를 추가 */
 #coordinates-container, #json-output-container {
-    width: 300px; /* 너비를 고정 (예: 300px) */
+    /*width: 300px; /* 너비를 고정 (예: 300px) */
 }
 
+
+/* .file-button {
+	display: inline-block;
+	padding: 8px 16px;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	text-align: center;
+}
+
+.image-button {
+	background-color: #007bff; 
+	transition:all 0.3s ease;
+}
+
+.image-button:hover {
+	background-color: #0056b3; 
+}
+
+.txt-button {
+	background-color: #6c757d; 
+	transition:all 0.3s ease;
+}
+
+.txt-button:hover {
+	background-color: #5a6268; 
+} */
