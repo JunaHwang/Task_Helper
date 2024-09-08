@@ -200,29 +200,107 @@ a:hover {
 	}
 }
 .toast {
-	position:fixed;
-	bottom:20px;
-	right:20px;
-	background-color:var(--primary-color);
-	/* 기본 색상 */
-	color:white;
-	padding:10px 20px;
-	border-radius:5px;
-	box-shadow:0 4px 8px rgba(0,0,0,0.1);
-	opacity:1;
-	transition:opacity 0.5s ease,transform 0.5s ease;
-	transform:translateY(0);
-	z-index:1000;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    opacity: 1;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: translateY(0);
+    z-index: 1000;
+    margin-bottom: 10px; /* Ensure spacing between toasts */
 }
+
 .toast.fade-out {
-	opacity:0;
-	transform:translateY(20px);
+    opacity: 0;
+    transform: translateY(20px);
 }
+
 .toast-success {
-	background-color:var(--primary-color);
-	/* 성공 시 파란색 */
+    background-color: var(--primary-color); /* Success color (blue) */
 }
+
 .toast-warning {
-	background-color: #FF8C00;
-	/* 경고 시 주황색 */
+    background-color: #FF8C00; /* Warning color (orange) */
 }
+
+.toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column-reverse; /* 새 알림이 위로 쌓이도록 설정 */
+    gap: 10px; /* 알림 사이의 간격 */
+    z-index: 1000; /* 최상위 레벨로 표시 */
+}
+
+
+/* 기존 스타일 유지 */
+#canvas-container {
+	position: relative;
+	display: inline-block;
+	margin-top: 20px;
+}
+
+#canvas {
+	position: absolute;
+	top: 0;
+	left: 0;
+	border: 1px solid #000;
+}
+#cropped-images-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-top: 10px;
+}
+.cropped-image-container {
+	border: 1px solid #ccc;
+	padding: 10px;
+	background-color: #f9f9f9;
+}
+.cropped-image {
+	border: 1px solid #000;
+	display: block;
+}
+.number-label {
+	text-align: center;
+	font-family: monospace;
+	font-size: 12px;
+	margin-top: 5px;
+}
+.controls {
+	margin-top: 10px;
+}
+
+.common-container {
+    white-space: pre;
+    font-family: monospace;
+    font-size: 12px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #f9f9f9;
+    margin: 0;
+    overflow-y: auto;
+    /*height: 200px; /* 세로 폭을 고정 (예: 200px) */
+    box-sizing: border-box;
+    /*width: 300px; /* 너비를 고정 (예: 300px) */
+}
+
+/* 좌표 출력 */
+#coordinates {
+}
+
+/* JSON 출력 */
+#json-output {
+}
+
+/* HTML에서 공통 스타일을 적용하기 위해 클래스를 추가 */
+#coordinates-container, #json-output-container {
+    width: 300px; /* 너비를 고정 (예: 300px) */
+}
+

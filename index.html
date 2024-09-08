@@ -2,118 +2,148 @@
 <html lang="ko">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>작업 도구</title>
-    <link rel="stylesheet" href="styles.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>작업 도구</title>
+	<link rel="stylesheet" href="styles.css">
 </head>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/5.0.0/diff.min.js"></script>
 
 <body>
-    <div class="grid-container">
-        <header class="header">
-            <div class="site-title">
-                <a href="#" onclick="goHome()">작업 도구</a>
-            </div>
-        </header>
-        <nav class="tab">
-            <button class="tablinks" onclick="openTab(event, 'TextCompare')">텍스트 비교</button>
-            <button class="tablinks" onclick="openTab(event, 'TextSplit')">텍스트 분리</button>
-            <button class="tablinks" onclick="openTab(event, 'TextCombine')">텍스트 결합</button>
-            <button class="tablinks" onclick="openTab(event, 'MarkdownTable')">마크다운 표 에디터</button>
-            <button class="tablinks" onclick="openTab(event, 'Prompt')">프롬프트</button>
-        </nav>
-        <div id="TextCompare" class="tabcontent">
-            <h3>텍스트 비교</h3>
-            <div class="button-container">
-                <button onclick="compareTexts()">비교</button>
-                <button onclick="resetTextCompare()">초기화</button>
-            </div>
-            <br>
-            <div class="compare-container">
-                <div class="compare-column">
-                    <div class="input-area">
-                        <input type="color" id="leftColor" value="#ffff00">
-                        <textarea id="text1" rows="4" placeholder="첫 번째 텍스트"></textarea>
-                    </div>
-                    <div id="result1" class="compare-result">
-                    </div>
-                </div>
-                <div class="compare-column">
-                    <div class="input-area">
-                        <input type="color" id="rightColor" value="#00ffff">
-                        <textarea id="text2" rows="4" placeholder="두 번째 텍스트"></textarea>
-                    </div>
-                    <div id="result2" class="compare-result">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="TextSplit" class="tabcontent">
-            <h3>텍스트 분리</h3>
-            <div class="input-container">
-                <div class="input-area">
-                    <input type="text" id="delimiter" class="delimiter-input" placeholder="구분자 입력 (기본값: @)">
-                    <textarea id="inputText" class="input-large" placeholder="텍스트를 입력하세요"></textarea>
-                    <div class="button-container">
-                        <button onclick="splitText()">분리</button>
-                        <button onclick="resetTextSplit()">초기화</button>
-                        <button onclick="copySplitText()">복사</button>
-                    </div>
-                    <div id="splitResult" class="compare-result">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="TextCombine" class="tabcontent">
-            <h3>텍스트 결합</h3>
-            <div class="input-container">
-                <div class="input-area">
-                    <input type="text" id="combineDelimiter" class="delimiter-input" placeholder="구분자 입력 (기본값: @)">
-                    <textarea id="textToCombine" class="input-large" placeholder="텍스트를 입력하실 때 줄 단위로 구분해 주세요"></textarea>
-                    <div class="button-container">
-                        <button onclick="combineText()">결합</button>
-                        <button onclick="resetTextCombine()">초기화</button>
-                        <button onclick="copyTextCombine()">복사</button>
-                    </div>
-                    <div id="combineResult" class="compare-result">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="MarkdownTable" class="tabcontent">
-            <h3>마크다운 표 에디터</h3>
-            <div class="controls">
-                <button id="removeRow">&nbsp;&#8593;&nbsp;</button>
-                <button id="addColumn">&#8594;</button>
-                <br>
-                <button id="addRow">&nbsp;&#8595;&nbsp;</button>
-                <button id="removeColumn">&#8592;</button>
-            </div>
-            <div>
-                <br>
-                <button id="resetTable">초기화</button>
-            </div>
-            <div id="tableContainer">
-            </div>
-            <div class="mode-toggle">
-                <label>
-                    <input type="checkbox" id="boldMode"> 볼드 모드 (셀 클릭으로 볼드 적용/해제) </label>
-            </div>
-            <button id="copyMarkdown">복사</button>
-            <br>
-            <br>
-            <textarea id="markdownInput" placeholder="마크다운 코드를 여기에 붙여넣으세요"></textarea>
-            <button id="loadMarkdown">불러오기</button>
-        </div>
-        <div id="Prompt" class="tabcontent">
-            <h3>프롬프트</h3>
-            <div class="form-container">
-                <label for="promptSelect">유형:</label>
-                <select id="promptSelect">
-                    <option value="" disabled selected>선택</option>
-                    
-                    <option value="당신은 특정 구조의 텍스트를 받게 될 것이며, 당신의 임무는 그것을 새로운 형식으로 재구성하는 것입니다. 기존 텍스트의 예시는 다음과 같습니다.
+	<div class="grid-container">
+		<header class="header">
+			<div class="site-title">
+				<a href="#" onclick="goHome()">작업 도구</a>
+			</div>
+		</header>
+		<nav class="tab">
+			<button class="tablinks" onclick="openTab(event, 'coordinate-check')">좌표 확인</button>
+			<button class="tablinks" onclick="openTab(event, 'TextCompare')">텍스트 비교</button>
+			<button class="tablinks" onclick="openTab(event, 'TextSplit')">텍스트 분리</button>
+			<button class="tablinks" onclick="openTab(event, 'TextCombine')">텍스트 결합</button>
+			<button class="tablinks" onclick="openTab(event, 'MarkdownTable')">마크다운 표 에디터</button>
+			<button class="tablinks" onclick="openTab(event, 'Prompt')">프롬프트</button>
+		</nav>
+		<div id="coordinate-check" class="tabcontent">
+			<h3>좌표 확인</h3>
+			<p>사용 방법: 이미지 업로드 후 드래그</p>
+			<p>되돌리기: Ctrl+Z</p>
+			<p>다시실행: Ctrl+Shift+Z</p>
+			<div>
+				<input type="file" id="file-input" />
+			</div>
+				<div id="canvas-container">
+					<img id="image" src="" alt="Upload an image">
+					<canvas id="canvas"></canvas>
+				</div>
+				<div class="controls">
+					<button id="copy-button">좌표 복사</button>
+					<button id="copy-json-button">JSON 복사</button>
+					<button id="reset-button">초기화</button>
+					<button id="undo-button">되돌리기</button>
+					<button id="redo-button">다시실행</button>
+				</div>
+				<div id="coordinates-cropped-container">
+					<div id="cropped-images-container"></div>
+					<div id="coordinates-container" class="common-container">
+						<div id="coordinates"></div>
+					</div>
+					<div id="json-output-container" class="common-container">
+						<div id="json-output"></div>
+					</div>
+				</div>
+		</div>
+		<div id="TextCompare" class="tabcontent">
+			<h3>텍스트 비교</h3>
+			<div class="button-container">
+				<button onclick="compareTexts()">비교</button>
+				<button onclick="resetTextCompare()">초기화</button>
+			</div>
+			<br>
+			<div class="compare-container">
+				<div class="compare-column">
+					<div class="input-area">
+						<input type="color" id="leftColor" value="#ffff00">
+						<textarea id="text1" rows="4" placeholder="첫 번째 텍스트"></textarea>
+					</div>
+					<div id="result1" class="compare-result">
+					</div>
+				</div>
+				<div class="compare-column">
+					<div class="input-area">
+						<input type="color" id="rightColor" value="#00ffff">
+						<textarea id="text2" rows="4" placeholder="두 번째 텍스트"></textarea>
+					</div>
+					<div id="result2" class="compare-result">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="TextSplit" class="tabcontent">
+			<h3>텍스트 분리</h3>
+			<div class="input-container">
+				<div class="input-area">
+					<input type="text" id="delimiter" class="delimiter-input" placeholder="구분자 입력 (기본값: @)">
+					<textarea id="inputText" class="input-large" placeholder="텍스트를 입력하세요"></textarea>
+					<div class="button-container">
+						<button onclick="splitText()">분리</button>
+						<button onclick="resetTextSplit()">초기화</button>
+						<button onclick="copySplitText()">복사</button>
+					</div>
+					<div id="splitResult" class="compare-result">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="TextCombine" class="tabcontent">
+			<h3>텍스트 결합</h3>
+			<div class="input-container">
+				<div class="input-area">
+					<input type="text" id="combineDelimiter" class="delimiter-input" placeholder="구분자 입력 (기본값: @)">
+					<textarea id="textToCombine" class="input-large" placeholder="텍스트를 입력하실 때 줄 단위로 구분해 주세요"></textarea>
+					<div class="button-container">
+						<button onclick="combineText()">결합</button>
+						<button onclick="resetTextCombine()">초기화</button>
+						<button onclick="copyTextCombine()">복사</button>
+					</div>
+					<div id="combineResult" class="compare-result">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="MarkdownTable" class="tabcontent">
+			<h3>마크다운 표 에디터</h3>
+			<div class="controls">
+				<button id="removeRow">&nbsp;&#8593;&nbsp;</button>
+				<button id="addColumn">&#8594;</button>
+				<br>
+				<button id="addRow">&nbsp;&#8595;&nbsp;</button>
+				<button id="removeColumn">&#8592;</button>
+			</div>
+			<div>
+				<br>
+				<button id="resetTable">초기화</button>
+			</div>
+			<div id="tableContainer">
+			</div>
+			<div class="mode-toggle">
+				<label>
+					<input type="checkbox" id="boldMode"> 볼드 모드 (셀 클릭으로 볼드 적용/해제) </label>
+			</div>
+			<button id="copyMarkdown">복사</button>
+			<br>
+			<br>
+			<textarea id="markdownInput" placeholder="마크다운 코드를 여기에 붙여넣으세요"></textarea>
+			<button id="loadMarkdown">불러오기</button>
+		</div>
+		<div id="Prompt" class="tabcontent">
+			<h3>프롬프트</h3>
+			<div class="form-container">
+				<label for="promptSelect">유형:</label>
+				<select id="promptSelect">
+					<option value="" disabled selected>선택</option>
+					
+					<option value="당신은 특정 구조의 텍스트를 받게 될 것이며, 당신의 임무는 그것을 새로운 형식으로 재구성하는 것입니다. 기존 텍스트의 예시는 다음과 같습니다.
 
 <기존_텍스트></기존_텍스트>
 
@@ -139,11 +169,11 @@
 기존 형식:
 ```
 1. 색상
-    -사과: 빨강
-    - 바나나 : 노랑
+	-사과: 빨강
+	- 바나나 : 노랑
 2. 구분
-    - 오렌지: 과일
-    - 토마토: 채소
+	- 오렌지: 과일
+	- 토마토: 채소
 ```
 
 새로운 형식:
@@ -158,7 +188,7 @@
 
 재구성된 텍스트를 제공하세요.">BC</option>
 
-                    <option value="당신은 경험 많은 기자입니다. 제시된 텍스트를 객관적이고 사실적인 뉴스 기사 형식으로 재작성해주세요. 다음 요소를 포함해야 합니다:
+					<option value="당신은 경험 많은 기자입니다. 제시된 텍스트를 객관적이고 사실적인 뉴스 기사 형식으로 재작성해주세요. 다음 요소를 포함해야 합니다:
 - 눈길을 끄는 헤드라인
 - 핵심 정보를 요약한 리드 문단
 - 5W1H (누가, 무엇을, 언제, 어디서, 왜, 어떻게)를 포함한 본문
@@ -169,8 +199,8 @@
 <기존_텍스트></기존_텍스트>
 
 만약 주어진 텍스트에서 위의 지시사항을 모두 이행하기 어렵다면, 추가 정보가 필요한 부분에 대해 질문해주세요. 추가 정보 없이 진행해야 한다면, 수행할 수 없는 부분을 명시하고 나머지 가능한 부분에 대해서만 작업을 진행해주세요.">뉴스 기사</option>
-                    
-                    <option value="당신은 해당 분야의 전문 연구자입니다. 제시된 텍스트를 학술 논문 형식으로 재구성해주세요. 다음 요소를 포함해야 합니다:
+					
+					<option value="당신은 해당 분야의 전문 연구자입니다. 제시된 텍스트를 학술 논문 형식으로 재구성해주세요. 다음 요소를 포함해야 합니다:
 - 제목
 - 초록 (연구 목적, 방법, 결과, 결론을 간략히 요약)
 - 서론 (연구 배경 및 목적)
@@ -185,8 +215,8 @@
 <기존_텍스트></기존_텍스트>
 
 만약 주어진 텍스트에서 위의 지시사항을 모두 이행하기 어렵다면, 추가 정보가 필요한 부분에 대해 질문해주세요. 추가 정보 없이 진행해야 한다면, 수행할 수 없는 부분을 명시하고 나머지 가능한 부분에 대해서만 작업을 진행해주세요.">논문</option>
-                    
-                    <option value="당신은 인기 있는 블로거입니다. 제시된 텍스트를 바탕으로 흥미롭고 정보가 풍부한 블로그 포스트를 작성해주세요. 다음 요소를 포함해야 합니다:
+					
+					<option value="당신은 인기 있는 블로거입니다. 제시된 텍스트를 바탕으로 흥미롭고 정보가 풍부한 블로그 포스트를 작성해주세요. 다음 요소를 포함해야 합니다:
 - 눈길을 끄는 제목
 - 흥미로운 도입부
 - 주요 내용을 소제목으로 구분
@@ -199,8 +229,8 @@
 <기존_텍스트></기존_텍스트>
 
 만약 주어진 텍스트에서 위의 지시사항을 모두 이행하기 어렵다면, 추가 정보가 필요한 부분에 대해 질문해주세요. 추가 정보 없이 진행해야 한다면, 수행할 수 없는 부분을 명시하고 나머지 가능한 부분에 대해서만 작업을 진행해주세요.">블로그</option>
-                    
-                    <option value="당신은 마케팅 전문가입니다. 제시된 텍스트를 바탕으로 매력적이고 효과적인 홍보 문구를 작성해주세요. 다음 요소를 포함해야 합니다:
+					
+					<option value="당신은 마케팅 전문가입니다. 제시된 텍스트를 바탕으로 매력적이고 효과적인 홍보 문구를 작성해주세요. 다음 요소를 포함해야 합니다:
 - 간결하고 강렬한 메시지
 - 독자의 관심을 끌 수 있는 요소
 - 제품이나 서비스의 주요 장점 강조
@@ -210,8 +240,8 @@
 <기존_텍스트></기존_텍스트>
 
 만약 주어진 텍스트에서 위의 지시사항을 모두 이행하기 어렵다면, 추가 정보가 필요한 부분에 대해 질문해주세요. 추가 정보 없이 진행해야 한다면, 수행할 수 없는 부분을 명시하고 나머지 가능한 부분에 대해서만 작업을 진행해주세요.">마케팅/홍보 문구</option>
-                    
-                    <option value="당신은 소셜 미디어 전문가입니다. 제시된 텍스트를 바탕으로 매력적이고 간결한 SNS 글을 작성해주세요. 다음 요소를 포함해야 합니다:
+					
+					<option value="당신은 소셜 미디어 전문가입니다. 제시된 텍스트를 바탕으로 매력적이고 간결한 SNS 글을 작성해주세요. 다음 요소를 포함해야 합니다:
 - 짧고 강렬한 메시지
 - 해시태그 제안 (관련된 경우)
 - 독자의 참여를 유도하는 질문이나 콜 투 액션
@@ -221,7 +251,7 @@
 
 만약 주어진 텍스트에서 위의 지시사항을 모두 이행하기 어렵다면, 추가 정보가 필요한 부분에 대해 질문해주세요. 추가 정보 없이 진행해야 한다면, 수행할 수 없는 부분을 명시하고 나머지 가능한 부분에 대해서만 작업을 진행해주세요.">SNS</option>
 
-                    <option value="당신은 정중한 편지를 작성하는 전문가입니다. 제시된 텍스트를 바탕으로 포멀한 편지를 작성해주세요. 다음 요소를 포함해야 합니다:
+					<option value="당신은 정중한 편지를 작성하는 전문가입니다. 제시된 텍스트를 바탕으로 포멀한 편지를 작성해주세요. 다음 요소를 포함해야 합니다:
 - 적절한 인사말
 - 본문 내용 (목적에 맞는 설명)
 - 정중한 마무리 인사
@@ -231,7 +261,7 @@
 
 만약 주어진 텍스트에서 위의 지시사항을 모두 이행하기 어렵다면, 추가 정보가 필요한 부분에 대해 질문해주세요. 추가 정보 없이 진행해야 한다면, 수행할 수 없는 부분을 명시하고 나머지 가능한 부분에 대해서만 작업을 진행해주세요.">편지</option>
 
-                    <option value="당신은 뛰어난 연설가입니다. 제시된 텍스트를 바탕으로 감동적이고 설득력 있는 연설문을 작성해주세요. 다음 요소를 포함해야 합니다:
+					<option value="당신은 뛰어난 연설가입니다. 제시된 텍스트를 바탕으로 감동적이고 설득력 있는 연설문을 작성해주세요. 다음 요소를 포함해야 합니다:
 - 강렬한 도입부
 - 주요 메시지와 논리적 전개
 - 청중의 공감을 이끌어내는 요소
@@ -242,7 +272,7 @@
 
 만약 주어진 텍스트에서 위의 지시사항을 모두 이행하기 어렵다면, 추가 정보가 필요한 부분에 대해 질문해주세요. 추가 정보 없이 진행해야 한다면, 수행할 수 없는 부분을 명시하고 나머지 가능한 부분에 대해서만 작업을 진행해주세요.">연설문</option>
 
-                    <option value="당신은 인기 유튜버입니다. 제시된 텍스트를 바탕으로 흥미롭고 매력적인 유튜브 스크립트를 작성해주세요. 다음 요소를 포함해야 합니다:
+					<option value="당신은 인기 유튜버입니다. 제시된 텍스트를 바탕으로 흥미롭고 매력적인 유튜브 스크립트를 작성해주세요. 다음 요소를 포함해야 합니다:
 - 강렬한 도입부
 - 주요 내용 (소제목으로 구분)
 - 시청자의 참여를 유도하는 질문이나 콜 투 액션
@@ -254,37 +284,35 @@
 만약 주어진 텍스트에서 위의 지시사항을 모두 이행하기 어렵다면, 추가 정보가 필요한 부분에 대해 질문해주세요. 추가 정보 없이 진행해야 한다면, 수행할 수 없는 부분을 명시하고 나머지 가능한 부분에 대해서만 작업을 진행해주세요.">유튜브</option>
 
 
-                </select>
-                <textarea id="promptInputText" class="input-large" placeholder="텍스트를 입력하세요"></textarea>
-                <div class="button-container">
-                    <button onclick="generatePrompt()">프롬프트 생성</button>
-                    <button onclick="resetPrompt()">초기화</button>
-                    <button onclick="copyPrompt()">복사</button>
-                </div>
-                <div id="promptResult" class="compare-result">
-                </div>
-            </div>
-        </div>
-        <div id="homeContent" class="tabcontent">
-            <h3>This page was generated by AI<br>
-                <br>
-                안녕하세요.<br>
-            </h3>
-            <h3>프롬프트 탭은 초기 버전으로, 지속적으로 업데이트 할 예정입니다.</h3>
-            <li><a href="https://wikidocs.net/67060" target="_blank">위키독스 IT 글쓰기와 번역 노트</a></li>
-            <li><a href="https://www.korean.go.kr/front/etcData/etcDataView.do?mn_id=208&etc_seq=529" target="_blank">국립국어원 공공언어 바로쓰기</a></li>
-            <li><a href="https://www.promptingguide.ai/kr" target="_blank">프롬프트 엔지니어링 가이드</a></li>
-            <li><a href="https://modulabs.co.kr/blog/prompt-engineering/" target="_blank">프롬프트 엔지니어링 방법 예시 꿀팁 대방출 (feat. 앤드류 응)</a></li>
-            <li><a href="https://dillinger.io/" target="_blank">마크다운 미리보기</a></li>
-            <li><a href="https://wepplication.github.io/tools/" target="_blank">온라인 도구 모음</a></li>
-            <li><a href="https://xn--yq5bk9r.com/blog/text-remove-html#google_vignette" target="_blank">HTML 태그 제거기</a></li>
-            <p>
-                <br>
-                E-mail : junatrout27@gmail.com
-            </p>
-        </div>
-    </div>
-    <script src="script.js"></script>
+				</select>
+				<textarea id="promptInputText" class="input-large" placeholder="텍스트를 입력하세요"></textarea>
+				<div class="button-container">
+					<button onclick="generatePrompt()">프롬프트 생성</button>
+					<button onclick="resetPrompt()">초기화</button>
+					<button onclick="copyPrompt()">복사</button>
+				</div>
+				<div id="promptResult" class="compare-result">
+				</div>
+			</div>
+		</div>
+		<div id="homeContent" class="tabcontent">
+			<h3>This page was generated by AI
+			<br>
+			</h3>
+			<li><a href="https://wikidocs.net/67060" target="_blank">위키독스 IT 글쓰기와 번역 노트</a></li>
+			<li><a href="https://www.korean.go.kr/front/etcData/etcDataView.do?mn_id=208&etc_seq=529" target="_blank">국립국어원 공공언어 바로쓰기</a></li>
+			<li><a href="https://www.promptingguide.ai/kr" target="_blank">프롬프트 엔지니어링 가이드</a></li>
+			<li><a href="https://modulabs.co.kr/blog/prompt-engineering/" target="_blank">프롬프트 엔지니어링 방법 예시 꿀팁 대방출 (feat. 앤드류 응)</a></li>
+			<li><a href="https://dillinger.io/" target="_blank">마크다운 미리보기</a></li>
+			<li><a href="https://wepplication.github.io/tools/" target="_blank">온라인 도구 모음</a></li>
+			<li><a href="https://xn--yq5bk9r.com/blog/text-remove-html#google_vignette" target="_blank">HTML 태그 제거기</a></li>
+			<p>
+				<br>
+				E-mail : junatrout27@gmail.com
+			</p>
+		</div>
+	</div>
+	<script src="script.js"></script>
 </body>
 
 </html>
